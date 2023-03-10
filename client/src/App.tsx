@@ -53,7 +53,7 @@ function App() {
 
         if (profileObj) {
             const response = await fetch(
-                "https://yariga2.onrender.com//api/v1/users",
+                "https://yariga2.onrender.com/api/v1/users",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
