@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState } from 'react';
 
-import { Typography, Box, Stack } from "@pankod/refine-mui";
+import { Typography, Box, Stack, maxWidth, useTheme} from "@pankod/refine-mui";
 import { useDelete, useGetIdentity, useShow } from "@pankod/refine-core";
 import { useParams, useNavigate } from "@pankod/refine-react-router-v6";
 import {
@@ -17,7 +17,7 @@ import { CustomButton } from "components";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 
 const PropertyDetails = () => {
-    
+    const theme = useTheme();
     const navigate = useNavigate();
     const { data: user } = useGetIdentity();
     const { queryResult } = useShow();
@@ -71,31 +71,37 @@ const PropertyDetails = () => {
         return img.width !== 0 && img.height !== 0;
     }
 
-   
+ 
     
     return (
         <Box
             borderRadius="15px"
             padding="20px"
-            bgcolor="#FCFCFC"
-            width="fit-content"
+            bgcolor={theme.palette.mode === "dark" ? "#0E8388" : "#fcfcfc"}
+            display='flex'
+            flexDirection='column'
+
+            
         >
-            <Typography fontSize={25} fontWeight={700} color="#11142D">
+            <Typography fontSize={25} fontWeight={700} color={theme.palette.mode === "dark" ? "white" :'#11142d'}>
                 Details
             </Typography>
 
             <Box
                 mt="20px"
                 display="flex"
+                justifyContent='space-around'
                 flexDirection={{ xs: "column", lg: "row" }}
                 gap={4}
             >
-                <Box flex={1} maxWidth={764}>
+                <Box flex={1} maxWidth={600}   >
                     <img
                         src={propertyDetails.photo}
                         alt="property_details-img"
                         height={546}
-                        style={{ objectFit: "cover", borderRadius: "10px" }}
+                        
+                        
+                        style={{ objectFit: "contain", borderRadius: "10px",maxWidth:'450' }}
                         className="property_details-img"
                     />
 
@@ -109,7 +115,7 @@ const PropertyDetails = () => {
                             <Typography
                                 fontSize={18}
                                 fontWeight={500}
-                                color="#11142D"
+                                color={theme.palette.mode === "dark" ? "white" :'#11142d'}
                                 textTransform="capitalize"
                             >
                                 {propertyDetails.propertyType}
@@ -136,7 +142,7 @@ const PropertyDetails = () => {
                                     fontSize={22}
                                     fontWeight={600}
                                     mt="10px"
-                                    color="#11142D"
+                                    color={theme.palette.mode === "dark" ? "white" :'#11142d'}
                                 >
                                     {propertyDetails.title}
                                 </Typography>
@@ -146,8 +152,8 @@ const PropertyDetails = () => {
                                     alignItems="center"
                                     gap={0.5}
                                 >
-                                    <Place sx={{ color: "#808191" }} />
-                                    <Typography fontSize={14} color="#808191">
+                                    <Place sx={{ color:theme.palette.mode === "dark" ? "white" :"#808191" }} />
+                                    <Typography fontSize={14} color={theme.palette.mode === "dark" ? "white" :"#808191"}>
                                         {propertyDetails.location}
                                     </Typography>
                                 </Stack>
@@ -158,7 +164,7 @@ const PropertyDetails = () => {
                                     fontSize={16}
                                     fontWeight={600}
                                     mt="10px"
-                                    color="#11142D"
+                                    color={theme.palette.mode === "dark" ? "white" :'#11142d'}
                                 >
                                     Price
                                 </Typography>
@@ -170,13 +176,13 @@ const PropertyDetails = () => {
                                     <Typography
                                         fontSize={25}
                                         fontWeight={700}
-                                        color="#475BE8"
+                                        color={theme.palette.mode === "dark" ? "white" :"#475BE8"}
                                     >
                                         ${propertyDetails.price}
                                     </Typography>
                                     <Typography
                                         fontSize={14}
-                                        color="#808191"
+                                        color={theme.palette.mode === "dark" ? "white" :"#808191"}
                                         mb={0.5}
                                     >
                                         for one day
@@ -186,10 +192,10 @@ const PropertyDetails = () => {
                         </Stack>
 
                         <Stack mt="25px" direction="column" gap="10px">
-                            <Typography fontSize={18} color="#11142D">
+                            <Typography fontSize={18} color={theme.palette.mode === "dark" ? "white" :'#11142d'}>
                                 Description
                             </Typography>
-                            <Typography fontSize={14} color="#808191">
+                            <Typography fontSize={14} color={theme.palette.mode === "dark" ? "white" :"#808191"}>
                                 {propertyDetails.description}
                             </Typography>
                         </Stack>
@@ -200,8 +206,9 @@ const PropertyDetails = () => {
                     width="100%"
                     flex={1}
                     maxWidth={326}
-                    display="flex"
+                    display="flex"  
                     flexDirection="column"
+                    alignItems='center'
                     gap="20px"
                 >
                     <Stack
@@ -234,11 +241,11 @@ const PropertyDetails = () => {
                                 }}
                             />
 
-                            <Box mt="15px">
+                            <Box mt="15px" display='flex' alignItems='center' >
                                 <Typography
                                     fontSize={18}
                                     fontWeight={600}
-                                    color="#11142D"
+                                    color={theme.palette.mode === "dark" ? "white" :'#11142d'}
                                 >
                                     {propertyDetails.creator.name}
                                 </Typography>
@@ -246,7 +253,7 @@ const PropertyDetails = () => {
                                     mt="5px"
                                     fontSize={14}
                                     fontWeight={400}
-                                    color="#808191"
+                                    color={theme.palette.mode === "dark" ? "white" :"#808191"}
                                 >
                                     Agent
                                 </Typography>
@@ -258,11 +265,11 @@ const PropertyDetails = () => {
                                 alignItems="center"
                                 gap={1}
                             >
-                                <Place sx={{ color: "#808191" }} />
+                                <Place sx={{ color:theme.palette.mode === "dark" ? "white" :"#808191" }} />
                                 <Typography
                                     fontSize={14}
                                     fontWeight={400}
-                                    color="#808191"
+                                    color={theme.palette.mode === "dark" ? "white" :"#808191"}
                                 >
                                     North Carolina, USA
                                 </Typography>
@@ -272,7 +279,7 @@ const PropertyDetails = () => {
                                 mt={1}
                                 fontSize={16}
                                 fontWeight={600}
-                                color="#11142D"
+                                color={theme.palette.mode === "dark" ? "white" :"#11142D"}
                             >
                                 {propertyDetails.creator.allProperties.length}{" "}
                                 Properties
@@ -288,8 +295,8 @@ const PropertyDetails = () => {
                         >
                             <CustomButton
                                 title={!isCurrentUser ? "Message" : "Edit"}
-                                backgroundColor="#475BE8"
-                                color="#FCFCFC"
+                                backgroundColor={theme.palette.mode === "dark" ? "#2C3333" :"#475be8"}
+                            color="#fcfcfc"
                                 fullWidth
                                 icon={
                                     !isCurrentUser ? <ChatBubble /> : <Edit />
@@ -307,7 +314,7 @@ const PropertyDetails = () => {
                                 backgroundColor={
                                     !isCurrentUser ? "#2ED480" : "#d42e2e"
                                 }
-                                color="#FCFCFC"
+                                color= "#fcfcfc"
                                 fullWidth
                                 icon={!isCurrentUser ? <Phone /> : <Delete />}
                                 handleClick={() => {
@@ -318,15 +325,15 @@ const PropertyDetails = () => {
                     </Stack>
 
                     <Stack>
-                        <Mapgoogle  propertyDetails={propertyDetails.location} />
+                        <Mapgoogle  propertyDetails={propertyDetails} />
                     </Stack>
 
                     <Box gap={4} display='flex' flexDirection='column' >
                     <DateRangePicker onChange={handleDateChange} value={value} />
                         <CustomButton
                             title="Book Now"
-                            backgroundColor="#475BE8"
-                            color="#FCFCFC"
+                            backgroundColor={theme.palette.mode === "dark" ? "#2C3333" :"#475be8"}
+                            color="#fcfcfc"
                             fullWidth
                         />
                         

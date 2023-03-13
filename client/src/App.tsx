@@ -10,9 +10,8 @@ import {
   ErrorComponent,
 } from "@pankod/refine-mui";
 import { AccountCircleOutlined, ChatBubbleOutline,PeopleAltOutlined,StarOutlineOutlined,VillaOutlined } from "@mui/icons-material";
-import { initializeApp } from "firebase/app";
 import dataProvider from "@pankod/refine-simple-rest";
-import { MuiInferencer } from "@pankod/refine-inferencer/mui";
+
 import routerProvider from "@pankod/refine-react-router-v6";
 import axios, { AxiosRequestConfig } from "axios";
 import { ColorModeContextProvider } from "contexts";
@@ -34,17 +33,7 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
 
   return request;
 });
-const firebaseConfig = {
-  apiKey: "AIzaSyDyaXqwhoFwEYLELjuWhsSrssyHvPv7Do4",
-  authDomain: "annular-orb-379409.firebaseapp.com",
-  projectId: "annular-orb-379409",
-  storageBucket: "annular-orb-379409.appspot.com",
-  messagingSenderId: "1000413131186",
-  appId: "1:1000413131186:web:32d7abff0d6669f78bf4ab"
-};
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
 function App() {
   const authProvider: AuthProvider = {
@@ -144,16 +133,7 @@ function App() {
               show:AgentProfile,
               icon: <PeopleAltOutlined/>
             },
-            {
-              name: "reviews",
-              list: Home,
-              icon: <StarOutlineOutlined/>
-            },
-            {
-              name: "message",
-              list: Home,
-              icon : <ChatBubbleOutline/>
-            },
+                      
             {
               name: "my-profile",
               options:{ label:'My Profile'},

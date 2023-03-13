@@ -66,6 +66,8 @@ const createProperty = async (req, res) => {
             price,
             photo,
             email,
+            lat,
+            lng,
         } = req.body;
 
         const session = await mongoose.startSession();
@@ -82,6 +84,8 @@ const createProperty = async (req, res) => {
             description,
             propertyType,
             location,
+            lat,
+            lng,
             price,
             photo: photoUrl.url,
             creator: user._id,
@@ -102,12 +106,13 @@ const createProperty = async (req, res) => {
 const updateProperty = async (req, res) => {
     try{
 const {id}=req.params;
-const {title,description,propertyType, location, price, photo}=req.body;
+const {title,description,propertyType, location, price,lat,
+    lng, photo}=req.body;
 
 const photoUrl= await cloudinary.uploader.upload(photo);
 
 await Property.findByIdAndUpdate({_id:id},{
-    title,description,propertyType,location,price,photo:photoUrl.url || photo
+    title,description,propertyType,location,price,lat,lng,photo:photoUrl.url || photo
 })
 res.status(200).json({message:'Property updated successfully'})
     }catch (error) {

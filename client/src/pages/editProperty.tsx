@@ -1,52 +1,73 @@
-import { useState } from "react";
-import { useGetIdentity } from "@pankod/refine-core";
-import { FieldValues, useForm } from "@pankod/refine-react-hook-form";
-import Form from "components/common/Form";
+import React from 'react'
+import {useState} from 'react'
+import { useGetIdentity } from '@pankod/refine-core'
+import { FieldValues, useForm } from '@pankod/refine-react-hook-form'
+import { useNavigate } from '@pankod/refine-react-router-v6'
+import Form from 'components/common/Form'
+import { LoadScript, GoogleMap,  } from '@react-google-maps/api';
+import Geocode from 'react-geocode';
 
 const CreateProperty = () => {
-    const { data: user } = useGetIdentity();
-    const [propertyImage, setPropertyImage] = useState({ name: "", url: "" });
-    const {
-        refineCore: { onFinish, formLoading },
-        register,
-        handleSubmit,
-    } = useForm();
-
+    const navigate = useNavigate();
+    const  {data: user}= useGetIdentity();
+    const [propertyImage, setPropertyImage]= useState({name:'', url:''})
+    const {refineCore:{onFinish, formLoading}, register, handleSubmit }= useForm();
+    
+    const apiKey = `${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
+    Geocode.setApiKey(apiKey);
+    
     const handleImageChange = (file: File) => {
-        const reader = (readFile: File) =>
-            new Promise<string>((resolve, reject) => {
-                const fileReader = new FileReader();
-                fileReader.onload = () => resolve(fileReader.result as string);
-                fileReader.readAsDataURL(readFile);
-            });
-
-        reader(file).then((result: string) =>
-            setPropertyImage({ name: file?.name, url: result }),
-        );
+      const reader = (readFile: File) => new Promise<string>((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.onload = () => resolve(fileReader.result as string);
+        fileReader.readAsDataURL(readFile);
+      });
+  
+      reader(file).then((result: string) => setPropertyImage({ name: file?.name, url: result }));
     };
-
-    const onFinishHandler = async (data: FieldValues) => {
-        if (!propertyImage.name) return alert("Please upload a property image");
-
-        await onFinish({
-            ...data,
-            photo: propertyImage.url,
-            email: user.email,
-        });
+    const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
+  const onFinishHandler = async (data: FieldValues) => {
+    if (!propertyImage.name) return alert('Please select an image');
+  
+    try {
+      const response = await Geocode.fromAddress(data.location);
+      const { lat, lng } = response.results[0].geometry.location;
+      setLat(parseFloat(lat));
+      setLng(parseFloat(lng));
+      console.log(lat, lng);
+  
+      await onFinish({
+        ...data,
+        photo: propertyImage.url,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+        email: user.email,
+      });
+  
+      console.log('Data sent to onFinish:', {
+        ...data,
+        photo: propertyImage.url,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+        email: user.email,
+      });
+    } catch (error) {
+      console.log(error);
+    }
     };
-
+    
     return (
-        <Form
-            type="Edit"
-            register={register}
-            onFinish={onFinish}
-            formLoading={formLoading}
-            handleSubmit={handleSubmit}
-            handleImageChange={handleImageChange}
-            onFinishHandler={onFinishHandler}
-            propertyImage={propertyImage}
-        />
-    );
-};
-
-export default CreateProperty;
+      <Form
+      type="Create"
+      register={register}
+      onFinish={onFinish}
+      formLoading={formLoading}
+      handleSubmit={handleSubmit}
+      handleImageChange={handleImageChange}
+      onFinishHandler={onFinishHandler}
+      propertyImage={propertyImage}/>
+    )
+  }
+  
+  export default CreateProperty
